@@ -57,8 +57,18 @@ const ModalContainer = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
+    transition: all 1s ease-in;
     background: rgba(0,0,0,0.3);
+
+    
+    @keyframes modalFade {
+        from {transform: translateX(100%);opacity: 0;}
+        to {transform: translateX(0);opacity: 1;}
+      }
+      
     #modal {
         background: var(--mainWhite);
+        animation-name: modalFade;
+        animation-duration: 1s;
     }
 `
