@@ -3,35 +3,45 @@ import PropTypes from 'prop-types';
 import styled  from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ProductConsumer } from '../context';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 
 
 const Product = (props) => {
-    const {id, title, img, price, inCart} = props.product;
+    const {id, title, img, price, inCart, info} = props.product;
     return (
-        <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
-            <div className="card">
-                <ProductConsumer>
-                    {value => (
-                        <div onClick={() =>value.handleDetail(id)} className="img-container p-5">
-                            <Link to="/details">
-                                <img src={img} alt="product" className="card-img-top"/>
-                            </Link>
-                            <button 
-                                onClick={() => {
-                                    value.addToCart(id);
-                                    value.openModal(id);
-                                }}
-                                 className="cart-btn" disabled={inCart ? true : false}
+     <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
+        <div className="card">
+            <ProductConsumer >
+                {value => (
+                <OverlayTrigger trigger="hover" placement="right" overlay={
+                    <Popover  id="popover-basic" {...props}>
+                        <Popover.Title as="h3">{title}</Popover.Title>
+                        <Popover.Content>
+                        <p as="p">{info}</p>
+                        </Popover.Content>
+                    </Popover>}
+                >
+                    <div onClick={() =>value.handleDetail(id)} className="img-container p-5">
+                        <Link to="/details">
+                            <img src={img} alt="product" className="card-img-top"/>
+                        </Link>
+                        <button 
+                            onClick={() => {
+                                value.addToCart(id);
+                                value.openModal(id);
+                            }}
+                            className="cart-btn" disabled={inCart ? true : false}
                             >
-                                {inCart ? 
-                                    (<p className="text-capitalize mb-0" disabled>In cart</p>) : 
-                                    (<i className="fas fa-cart-plus" />)
-                                }
-                            </button>
-                        </div>
-
+                            {inCart ? 
+                                (<p className="text-capitalize mb-0" disabled>In cart</p>) : 
+                                (<i className="fas fa-cart-plus" />)
+                            }
+                        </button>
+                    </div>
+                </OverlayTrigger>
                     )}
-                </ProductConsumer>
+            </ProductConsumer>
                 <div className="card-footer d-flex justify-content-between">
                     <p className="align-self-center mb-0">
                         {title}
